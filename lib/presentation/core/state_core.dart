@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:know_my_city/domain/axi/axi.dart';
+import 'package:know_my_city/domain/marker/marker.dart';
 
 @injectable
 class StateCore extends ChangeNotifier {
@@ -14,6 +15,9 @@ class StateCore extends ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _axiSubscriptionIdeosincracia;
   List<Axi> _axiIdeosincrasiaList = [];
   List<Axi> get axiIdeosincrasiaList => _axiIdeosincrasiaList;
+  StreamSubscription<QuerySnapshot>? _markersSubscription;
+  Set<Marker> _markersList = {};
+  Set<Marker> get markersList => _markersList;
   // Controles
   int _counter = 0;
   bool _isLoading = false;
@@ -87,6 +91,37 @@ class StateCore extends ChangeNotifier {
           Axi axi = Axi.fromFirestore(document.data());
           //print(axi.toJson());
           _axiIdeosincrasiaList.add(axi);
+        }
+        notifyListeners();
+      });
+    } on Exception catch (e) {
+      print('Error al acceder a Firestore: $e');
+    }
+  }
+
+  Marker findMarkerByName(String name) {
+    try {
+      return _markersList.firstWhere(
+        (marker) => marker.name == name,
+        orElse: () => Marker.defaultInstance(),
+      );
+    } catch (e) {
+      print('Error al buscar Marker por ID: $e');
+      return Marker.defaultInstance();
+    }
+  }
+
+  Future<void> checkMarkers() async {
+    print('Markers - Firestore');
+    try {
+      _markersSubscription = _firebaseFirestore
+          .collection('markers')
+          .snapshots()
+          .listen((snapshot) {
+        _markersList = {};
+        for (var document in snapshot.docs) {
+          Marker marker = Marker.fromFirestore(document.data());
+          _markersList.add(marker);
         }
         notifyListeners();
       });
