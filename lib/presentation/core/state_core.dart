@@ -79,8 +79,45 @@ class StateCore extends ChangeNotifier {
     }
   }
 
+  Future<void> checkAxiEspacios() async {
+    try {
+      _axiSubscriptionIdeosincracia = _firebaseFirestore
+          .collection('espacios')
+          .snapshots()
+          .listen((snapshot) {
+        for (var document in snapshot.docs) {
+          Axi axi = Axi.fromFirestore(document.data());
+          print(axi.titulo);
+          print(axi.title_id);
+          _axilist.add(axi);
+        }
+        notifyListeners();
+      });
+    } on Exception catch (e) {
+      print('Error al acceder a Firestore: $e');
+    }
+  }
+
+  Future<void> checkAxiGastronomia() async {
+    try {
+      _axiSubscriptionIdeosincracia = _firebaseFirestore
+          .collection('gastronomia')
+          .snapshots()
+          .listen((snapshot) {
+        for (var document in snapshot.docs) {
+          Axi axi = Axi.fromFirestore(document.data());
+          print(axi.titulo);
+          print(axi.title_id);
+          _axilist.add(axi);
+        }
+        notifyListeners();
+      });
+    } on Exception catch (e) {
+      print('Error al acceder a Firestore: $e');
+    }
+  }
+
   Future<void> checkAxiIdeosincracia() async {
-    print('Firestore all in one - steve jobs');
     try {
       _axiSubscriptionIdeosincracia = _firebaseFirestore
           .collection('ideosincracia')
@@ -94,28 +131,6 @@ class StateCore extends ChangeNotifier {
         }
         notifyListeners();
       });
-      /* _axiSubscriptionIdeosincracia = _firebaseFirestore
-          .collection('gastronomia')
-          .snapshots()
-          .listen((snapshot) {
-        for (var document in snapshot.docs) {
-          Axi axi = Axi.fromFirestore(document.data());
-          //print(axi.toJson());
-          _axilist.add(axi);
-        }
-        notifyListeners();
-      });
-      _axiSubscriptionIdeosincracia = _firebaseFirestore
-          .collection('espacios')
-          .snapshots()
-          .listen((snapshot) {
-        for (var document in snapshot.docs) {
-          Axi axi = Axi.fromFirestore(document.data());
-          //print(axi.toJson());
-          _axilist.add(axi);
-        }
-        notifyListeners();
-      }); */
     } on Exception catch (e) {
       print('Error al acceder a Firestore: $e');
     }

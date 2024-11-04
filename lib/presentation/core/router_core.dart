@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:know_my_city/presentation/pages/aboutus_page.dart';
+import 'package:know_my_city/presentation/pages/about_page.dart';
 import 'package:know_my_city/presentation/pages/axi_page.dart';
 import 'package:know_my_city/presentation/pages/home_page.dart';
 import 'package:know_my_city/presentation/pages/maps_page.dart';
