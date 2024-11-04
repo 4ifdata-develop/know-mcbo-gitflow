@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:know_my_city/presentation/widgets/ejes2_list.dart';
-import 'package:know_my_city/presentation/widgets/ejes3_list.dart';
+import 'package:know_my_city/presentation/widgets/espacios_burn.dart';
+import 'package:know_my_city/presentation/widgets/gastronomia_burn.dart';
 import 'package:know_my_city/presentation/widgets/maracaiboantano.dart';
 
 class TabCore extends StatefulWidget {

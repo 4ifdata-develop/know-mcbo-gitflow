@@ -1,7 +1,7 @@
 import 'package:know_my_city/presentation/core/state_core.dart';
 import 'package:know_my_city/presentation/core/tab_core.dart';
-import 'package:know_my_city/presentation/widgets/ejes2_list.dart';
-import 'package:know_my_city/presentation/widgets/ejes3_list.dart';
+import 'package:know_my_city/presentation/widgets/espacios_burn.dart';
+import 'package:know_my_city/presentation/widgets/gastronomia_burn.dart';
 import 'package:know_my_city/presentation/widgets/ideosincracia_burn.dart';
 import 'package:know_my_city/presentation/widgets/header_custom.dart';
 import 'package:know_my_city/presentation/widgets/maracaiboantano.dart';
@@ -49,8 +49,8 @@ class _AppHomeState extends State<AppHome> {
                         children: [
                           HeaderCustom(),
                           const IdeosincraciaContent(),
-                          //const EspaciosContent(),
-                          //const GastronomiaContent(),
+                          const EspaciosContent(),
+                          const GastronomiaContent(),
                           //const MaracaiboAntano(),
                           FooterWidget(),
                         ],

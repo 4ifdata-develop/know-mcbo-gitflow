@@ -14,8 +14,8 @@ class StateCore extends ChangeNotifier {
   StreamSubscription<User?>? _authSubscription;
   // Suscripciones de ejes - por coleccion
   StreamSubscription<QuerySnapshot>? _axiSubscriptionIdeosincracia;
-  List<Axi> _axiIdeosincrasiaList = [];
-  List<Axi> get axiIdeosincrasiaList => _axiIdeosincrasiaList;
+  List<Axi> _axilist = [];
+  List<Axi> get axilist => _axilist;
   Set<Marker> _markerList = {};
   Set<Marker> get markerList => _markerList;
   // Controles
@@ -69,7 +69,7 @@ class StateCore extends ChangeNotifier {
 
   Axi findAxiByTitle(int title_id) {
     try {
-      return _axiIdeosincrasiaList.firstWhere(
+      return axilist.firstWhere(
         (axi) => axi.title_id == title_id,
         orElse: () => Axi.defaultInstance(),
       );
@@ -80,17 +80,60 @@ class StateCore extends ChangeNotifier {
   }
 
   Future<void> checkAxiIdeosincracia() async {
-    print('Ideosincrasia - Firestore');
+    print('Firestore all in one - steve jobs');
     try {
       _axiSubscriptionIdeosincracia = _firebaseFirestore
           .collection('ideosincracia')
           .snapshots()
           .listen((snapshot) {
-        _axiIdeosincrasiaList = [];
+        for (var document in snapshot.docs) {
+          Axi axi = Axi.fromFirestore(document.data());
+          print(axi.titulo);
+          print(axi.title_id);
+          _axilist.add(axi);
+        }
+        notifyListeners();
+      });
+      /* _axiSubscriptionIdeosincracia = _firebaseFirestore
+          .collection('gastronomia')
+          .snapshots()
+          .listen((snapshot) {
         for (var document in snapshot.docs) {
           Axi axi = Axi.fromFirestore(document.data());
           //print(axi.toJson());
-          _axiIdeosincrasiaList.add(axi);
+          _axilist.add(axi);
+        }
+        notifyListeners();
+      });
+      _axiSubscriptionIdeosincracia = _firebaseFirestore
+          .collection('espacios')
+          .snapshots()
+          .listen((snapshot) {
+        for (var document in snapshot.docs) {
+          Axi axi = Axi.fromFirestore(document.data());
+          //print(axi.toJson());
+          _axilist.add(axi);
+        }
+        notifyListeners();
+      }); */
+    } on Exception catch (e) {
+      print('Error al acceder a Firestore: $e');
+    }
+  }
+
+  Future<void> checkMarker() async {
+    try {
+      _axiSubscriptionIdeosincracia = _firebaseFirestore
+          .collection('markers')
+          .snapshots()
+          .listen((snapshot) {
+        _markerList =
+            <Marker>{}; // Asegúrate de que _markerList es un Set<Marker> de google_maps_flutter
+        for (var document in snapshot.docs) {
+          CustomMarker customMarker =
+              CustomMarker.fromFirestore(document.data());
+          Marker googleMapMarker = customMarker.toGoogleMapMarker();
+          _markerList.add(googleMapMarker);
         }
         notifyListeners();
       });
@@ -98,27 +141,6 @@ class StateCore extends ChangeNotifier {
       print('Error al acceder a Firestore: $e');
     }
   }
-
-  Future<void> checkMarker() async {
-  try {
-    _axiSubscriptionIdeosincracia = _firebaseFirestore
-        .collection('markers')
-        .snapshots()
-        .listen((snapshot) {
-      _markerList = <Marker>{};  // Asegúrate de que _markerList es un Set<Marker> de google_maps_flutter
-      for (var document in snapshot.docs) {
-        CustomMarker customMarker = CustomMarker.fromFirestore(document.data());
-        Marker googleMapMarker = customMarker.toGoogleMapMarker();
-        _markerList.add(googleMapMarker);
-      }
-      notifyListeners();
-    });      
-  } on Exception catch (e) {
-    print('Error al acceder a Firestore: $e');
-  }
-}
-
-
 
   @override
   void dispose() {

@@ -8,7 +8,17 @@ int getIndexFromList(List<String> list, String value) {
   return list.indexOf(value);
 }
 
-List<String> ideosincraciaAux = ['tranvia_de_maracaibo', 'gaitas', 'artesania'];
+List<String> ideosincraciaAux = [
+  'tranvia_de_maracaibo',
+  'gaitas',
+  'artesania',
+  'patacones',
+  'mandocas',
+  'bollospelones',
+  'basilica',
+  'vereda',
+  'calle_carabobo'
+];
 
 final routerCore = GoRouter(
   routes: [
