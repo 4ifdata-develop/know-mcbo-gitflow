@@ -7,7 +7,7 @@ part of 'custom_marker.dart';
 // **************************************************************************
 
 CustomMarker _$CustomMarkerFromJson(Map<String, dynamic> json) => CustomMarker(
-      iconIndex: (json['iconIndex'] as String),
+      iconIndex: json['iconIndex'] as String,
       name: json['name'] as String,
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
